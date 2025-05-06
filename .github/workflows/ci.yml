@@ -1,0 +1,57 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout kode dari repo
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Setup Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Build the project
+    - name: Build project
+      run: npm run build
+
+    # Deploy to Server
+    - name: Deploy to Server via SSH
+      env:
+        PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Menggunakan SSH private key dari GitHub secrets
+        SERVER_IP: 134.209.104.247
+        SERVER_USER: your_server_username  # Ganti dengan username Anda di server
+        SERVER_PATH: /path/to/deployment/directory  # Path di server tempat aplikasi akan disalin
+      run: |
+        # Set up SSH
+        mkdir -p ~/.ssh
+        echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+        # Menambahkan server ke list host yang dikenal untuk menghindari prompt yes/no
+        ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+
+        # Menggunakan SCP untuk menyalin hasil build ke server
+        scp -r build/* $SERVER_USER@$SERVER_IP:$SERVER_PATH
+
+        # Opsional: Jika ingin menjalankan server (misalnya menggunakan pm2 atau npx)
+        ssh $SERVER_USER@$SERVER_IP << 'EOF'
+          cd $SERVER_PATH
+          # Jalankan aplikasi React (misalnya menggunakan serve atau pm2)
+          npx serve -s . -l 5000  # Jika menggunakan serve untuk menjalankan aplikasi
+          # Atau jika menggunakan pm2:
+          # pm2 restart app-name
+        EOF
