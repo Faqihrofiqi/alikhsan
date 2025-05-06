@@ -35,23 +35,26 @@ jobs:
         SERVER_IP: 134.209.104.247
         SERVER_USER: root  # Ganti dengan username Anda di server
         SERVER_PATH: /root/pondok/  # Path di server tempat aplikasi akan disalin
-      run: |
+    - run: |
         # Set up SSH
         mkdir -p ~/.ssh
         echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-        # Menambahkan server ke list host yang dikenal untuk menghindari prompt yes/no
+        # Add server to known hosts
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
 
-        # Menggunakan SCP untuk menyalin hasil build ke server
+        # Add keep-alive options to prevent timeout
+        echo "Host *" >> ~/.ssh/config
+        echo "    ServerAliveInterval 60" >> ~/.ssh/config
+        echo "    ServerAliveCountMax 5" >> ~/.ssh/config
+
+        # Perform file transfer
         scp -r build/* $SERVER_USER@$SERVER_IP:$SERVER_PATH
 
-        # Opsional: Jika ingin menjalankan server (misalnya menggunakan pm2 atau npx)
+        # SSH into the server
         ssh $SERVER_USER@$SERVER_IP << 'EOF'
           cd $SERVER_PATH
-          # Jalankan aplikasi React (misalnya menggunakan serve atau pm2)
-          npx serve -s . -l 5000  # Jika menggunakan serve untuk menjalankan aplikasi
-          # Atau jika menggunakan pm2:
-          # pm2 restart app-name
+          # Run React app
+          npx serve -s . -l 5000
         EOF
