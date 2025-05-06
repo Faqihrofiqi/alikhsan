@@ -35,7 +35,8 @@ jobs:
         SERVER_IP: 134.209.104.247
         SERVER_USER: root  # Ganti dengan username Anda di server
         SERVER_PATH: /root/pondok/  # Path di server tempat aplikasi akan disalin
-    - run: |
+    
+      run: |
         # Set up SSH
         mkdir -p ~/.ssh
         echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
