@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
 
 // react-router components
@@ -28,24 +13,32 @@ import Presentation from "layouts/pages/presentation";
 
 // Material Kit 2 React routes
 import routes from "routes";
+import SignInBasic from "pages/LandingPages/SignIn";
 
 export default function App() {
   const { pathname } = useLocation();
 
-  // Setting page scroll to 0 when changing the route
+  // Mengatur scroll ke atas saat berpindah rute
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  // Fungsi untuk mendapatkan semua route secara rekursif
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
-        return getRoutes(route.collapse);
+        return getRoutes(route.collapse); // Jika ada nested routes, panggil getRoutes secara rekursif
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            path={route.route}
+            element={route.component} // Render komponen yang sesuai
+            key={route.key} // Berikan key untuk setiap route
+          />
+        );
       }
 
       return null;
@@ -55,9 +48,12 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        {getRoutes(routes)}
-        <Route path="/presentation" element={<Presentation />} />
-        <Route path="*" element={<Navigate to="/presentation" />} />
+        {getRoutes(routes)} {/* Render semua route yang ada di routes */}
+        <Route path="/presentation" element={<Presentation />} />{" "}
+        {/* Rute tambahan untuk halaman presentasi */}
+        <Route path="*" element={<Navigate to="/presentation" />} />{" "}
+        {/* Redirect ke /presentation jika route tidak ditemukan */}
+        <Route path="/SignIn" element={<SignInBasic />} />{" "}
       </Routes>
     </ThemeProvider>
   );
