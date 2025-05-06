@@ -14,8 +14,16 @@ import Presentation from "layouts/pages/presentation";
 // Material Kit 2 React routes
 import routes from "routes";
 import SignInBasic from "pages/LandingPages/SignIn";
+import { Helmet } from "react-helmet";
 
 export default function App() {
+  <Helmet>
+    <title>Pondok Pesantren Al Ikhsan</title>
+    <meta
+      name="description"
+      content="Website resmi Pondok Pesantren Al Ikhsan untuk menyediakan pendidikan agama berkualitas."
+    />
+  </Helmet>;
   const { pathname } = useLocation();
 
   // Mengatur scroll ke atas saat berpindah rute

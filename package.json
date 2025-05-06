@@ -1,10 +1,10 @@
 {
-  "name": "material-kit-2-react",
+  "name": "pondok-pesantren-al-ikhsan-beji",
   "version": "2.1.0",
   "private": true,
   "author": "Al Ikhsan Team",
-  "license": "See license in https://##.com/license",
-  "description": "React version of Nganu Team Dev.",
+  "license": "See license in https://www.alikhsan-beji.tech/license",
+  "description": "Website Resmi Pondok Pesantren Al Ikhsan Beji Purwokerto",
   "bugs": {
     "url": "https://github.com/creativetimofficial/ct-material-kit-react/issues"
   },
@@ -30,6 +30,7 @@
     "react-countup": "6.4.2",
     "react-dom": "18.2.0",
     "react-flatpickr": "3.10.13",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "6.10.0",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "15.5.0",
