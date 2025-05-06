@@ -33,8 +33,8 @@ jobs:
       env:
         PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Menggunakan SSH private key dari GitHub secrets
         SERVER_IP: 134.209.104.247
-        SERVER_USER: your_server_username  # Ganti dengan username Anda di server
-        SERVER_PATH: /path/to/deployment/directory  # Path di server tempat aplikasi akan disalin
+        SERVER_USER: root  # Ganti dengan username Anda di server
+        SERVER_PATH: /root/pondok/  # Path di server tempat aplikasi akan disalin
       run: |
         # Set up SSH
         mkdir -p ~/.ssh
